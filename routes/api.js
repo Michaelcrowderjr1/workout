@@ -51,4 +51,3 @@ router.get("/api/workouts", (req, res) => {
 });
 
 module.exports = router;
-© 2021 GitHub, Inc.
