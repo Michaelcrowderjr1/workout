@@ -2,21 +2,23 @@ const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 
-const PORT = process.env.PORT || 3000;
+var PORT = process.env.PORT || 8080;
+var db = require("./models");
 
-const app = express();
-
-app.use(logger("dev"));
+var app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
+require("./routes/htmlRoutes.js")(app);
+require("./routes/apiRoutes.js")(app);
 
-const db = require("./models");
-
-require("./routes/apiRoutes")(app);
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://localhost/workout",
+  { useNewUrlParser: true }
+);
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
 });
+© 2021 GitHub, Inc.
