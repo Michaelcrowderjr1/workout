@@ -1,33 +1,25 @@
-//install packages
-const express = require('express');
-const logger = require('morgan');
-const mongoose = require('mongoose');
-//set port
-const PORT = process.env.PORT || 8080;
+const express = require("express");
+const morgan = require("morgan");
+const mongoose = require("mongoose");
+
 const app = express();
+const PORT = process.env.PORT || 8080;
 
-//use logger
-app.use(logger("dev"));
+app.use(morgan("dev"));
 
-//parser
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended:true}));
 app.use(express.json());
+app.use(express.static('public'));
 
-//use static files
-app.use(express.static("public"));
-
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/workoutTracker";
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/workout";
 mongoose.connect(MONGODB_URI,{  
     useNewUrlParser:true,
     useFindAndModify:false
 })
 
+require("./routes/api-Routes")(app);
+require("./routes/htmlRoutes")(app);
 
-//use routes
-require('./routes/api-routes')(app)
-require('./routes/html-routes')(app)
-
-
-app.listen(PORT, () => {
-    console.log(`App running on port ${PORT}..`);
-})
+app.listen(PORT,function(){ 
+    console.log(`App listening on Port ${PORT}`);
+});
