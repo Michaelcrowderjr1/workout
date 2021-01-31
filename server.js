@@ -1,24 +1,34 @@
-const express = require("express");
-const logger = require("morgan");
-const mongoose = require("mongoose");
+//install packages
+const express = require('express');
+const logger = require('morgan');
+const mongoose = require('mongoose');
+//set port
+const PORT = process.env.PORT || 8080;
+const app = express();
 
-var PORT = process.env.PORT || 8080;
-var db = require("./models");
+//use logger
+app.use(logger("dev"));
 
-var app = express();
+//parser
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+//use static files
 app.use(express.static("public"));
 
-require("./routes/htmlRoutes.js")(app);
-require("./routes/apiRoutes.js")(app);
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/workout";
+mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useFindAndModify: false
+})
+  
 
-mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://localhost/workout",
-  { useNewUrlParser: true }
-);
+
+//use routes
+require('./routes/api-routes')(app)
+require('./routes/html-routes')(app)
+
 
 app.listen(PORT, () => {
-  console.log(`App running on port ${PORT}!`);
-});
-© 2021 GitHub, Inc.
+    console.log(`App running on port ${PORT}..`);
+})
