@@ -1,11 +1,14 @@
 let mongoose = require("mongoose");
 let db = require("../models");
 
+//Defines the connection
 mongoose.connect("mongodb://localhost/workout", {
   useNewUrlParser: true,
   useFindAndModify: false
 });
 
+
+//Defines the workoutSeed
 let workoutSeed = [
   {
     day: new Date().setDate(new Date().getDate()-10),

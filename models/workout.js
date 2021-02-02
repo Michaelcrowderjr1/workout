@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
-
 const Schema = mongoose.Schema;
 
+//Defines WorkoutSchema
 const WorkoutSchema = new Schema({
   day: {
     type: Date,
     default: Date.now
   },
+
+  //Defines exercises by type, name, duration, reps, sets and distance, and total duration
   exercises: [
     {
       type: {
